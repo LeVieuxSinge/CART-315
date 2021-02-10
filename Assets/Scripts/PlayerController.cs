@@ -5,46 +5,47 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    public float playerSpeed = 2.0f;
-    public float jumpHeight = 1.0f;
-    public float gravityValue = -9.81f;
+    public float speed = 6.0f;
+    public float jumpSpeed = 8.0f;
+    public float gravity = 9.8f;
 
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
+    public Transform resetTransform;
+
+    CharacterController controller;
+    private Vector3 velocity;
 
     // Start is called before the first frame update
     void Start()
     {
         // Set components
-        controller = gameObject.AddComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        // Check ground condition
+        if (controller.isGrounded)
         {
-            playerVelocity.y = 0f;
+
+            // Move player
+            velocity = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+            velocity *= speed;
+
+            // Jump
+            if (Input.GetButtonDown("Jump"))
+            {
+                velocity.y = jumpSpeed;
+            }
         }
 
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.Move(move * Time.deltaTime * playerSpeed);
-
-        if (move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
-
-        // Changes the height position of the player..
-        if (Input.GetButton("Jump") && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        }
-
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        // Update position
+        velocity.y -= gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 
+    public void resetPosition()
+    {
+        transform.position = resetTransform.position;
+    }
 }
