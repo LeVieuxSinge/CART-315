@@ -8,13 +8,13 @@ public class AutoPlayerController : MonoBehaviour
     public float speedMultiplier = 1.0f;
     public float jumpHeight = 2.0f;
     public float gravity = -9.81f;
-    public float pushForce = 2.5f;
     public bool isGrounded;
     public bool isMoving;
 
     private GameInstance GameInstance;
     private CharacterController controller;
     private Vector3 velocity;
+    private Vector3 externalForces;
 
     // Start is called before the first frame update
     void Start()
@@ -68,11 +68,6 @@ public class AutoPlayerController : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
         }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        Debug.Log(hit.moveDirection);
     }
 
 }

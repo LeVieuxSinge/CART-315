@@ -427,7 +427,6 @@ MonoBehaviour:
   speedMultiplier: 0.8
   jumpHeight: 1
   gravity: -9.81
-  pushForce: 1
   isGrounded: 0
   isMoving: 0
 --- !u!143 &299344270

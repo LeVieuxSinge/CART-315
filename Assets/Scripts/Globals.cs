@@ -10,4 +10,33 @@ public class Globals : MonoBehaviour
         GameInstance GameInstance = GameInstanceObject.GetComponent<GameInstance>();
         return GameInstance;
     }
+
+    public static GameObject FindObjectByTag(string tag)
+    {
+        GameObject OutputObject = null;
+        Tags[] GameTags = GameObject.FindObjectsOfType<Tags>();
+        foreach (Tags item in GameTags)
+        {
+            if (item.IsTag(tag))
+            {
+                OutputObject = item.gameObject;
+                break;
+            }
+        }
+        return OutputObject;
+    }
+
+    public static GameObject[] FindObjectsByTag(string tag)
+    {
+        GameObject[] OutputObject = null;
+        Tags[] GameTags = GameObject.FindObjectsOfType<Tags>();
+        foreach (Tags item in GameTags)
+        {
+            if (item.IsTag(tag))
+            {
+                OutputObject.SetValue(item.gameObject, OutputObject.Length);
+            }
+        }
+        return OutputObject;
+    }
 }
