@@ -6,7 +6,7 @@ public class AnimationStateController : MonoBehaviour
 {
 
     Animator animator;
-    PlayerController controller;
+    AutoPlayerController controller;
     int isRunningHash;
     int isJumpingHash;
 
@@ -14,7 +14,7 @@ public class AnimationStateController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        controller = GetComponent<PlayerController>();
+        controller = GetComponent<AutoPlayerController>();
         // code optimisation
         isRunningHash = Animator.StringToHash("isRunning");
         isJumpingHash = Animator.StringToHash("isJumping");

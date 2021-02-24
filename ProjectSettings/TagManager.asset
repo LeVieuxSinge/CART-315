@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Food
+  - GameInstance
+  - InteractivePlatform
+  - Score
+  - Platform
+  - Object
   layers:
   - Default
   - TransparentFX
