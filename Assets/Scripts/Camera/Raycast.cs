@@ -5,8 +5,7 @@ using UnityEngine;
 public class Raycast : MonoBehaviour
 {
 
-    public float scaleMultiplier = 10f;
-    public float maxScale = 5f;
+    public float scaleSpeed = 0.1f;
 
     Ray ray;
     RaycastHit hit;
@@ -26,8 +25,6 @@ public class Raycast : MonoBehaviour
         if (GameInstance.GameRunning)
         {
 
-            float scroll = Input.mouseScrollDelta.y / scaleMultiplier;
-
             if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -36,26 +33,25 @@ public class Raycast : MonoBehaviour
                     if(hit.collider.gameObject.tag == "Scalable")
                     {
 
-                        Transform transform = hit.collider.gameObject.transform;
+                        Scalable scalable = hit.collider.gameObject.GetComponent<Scalable>();
 
-                        float scale = 0.0f;
-
-                        if (Input.GetMouseButton(0))
-                        {
-                            scale = Mathf.Min(transform.localScale.x + scaleMultiplier, maxScale);
-                        }
-
-                        if (Input.GetMouseButton(1))
-                        {
-                            scale = Mathf.Max(transform.localScale.x - scaleMultiplier, 1);
-                        }
-
+                        // Null if both keys are pressed
                         if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
                         {
-                            scale = Mathf.Max(transform.localScale.x);
+                            return;
                         }
 
-                        transform.localScale = new Vector3(scale, scale, scale);
+                        // Scale up if left click
+                        if (Input.GetMouseButton(0))
+                        {
+                            scalable.ScaleUp(scaleSpeed);
+                        }
+
+                        // Scale down if right click
+                        if (Input.GetMouseButton(1))
+                        {
+                            scalable.ScaleDown(scaleSpeed);
+                        }
 
                     }
                 }
