@@ -11,6 +11,11 @@ public class Globals : MonoBehaviour
         return GameInstance;
     }
 
+    public static GameObject GetPlayer()
+    {
+        return FindObjectByTag("Player");
+    }
+
     public static GameObject FindObjectByTag(string tag)
     {
         GameObject OutputObject = null;

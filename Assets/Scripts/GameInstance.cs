@@ -11,6 +11,7 @@ public class GameInstance : MonoBehaviour
     public float GameSpeed = 1.0f;
     public float GameTime = 0.0f;
     public float GameDistance = 0.0f;
+    public int GridCellSize = 1;
 
     // Start is called before the first frame update
     void Start()

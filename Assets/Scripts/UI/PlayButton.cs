@@ -23,6 +23,6 @@ public class PlayButton : MonoBehaviour
 
     void TaskOnClick()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Tutorial");
     }
 }

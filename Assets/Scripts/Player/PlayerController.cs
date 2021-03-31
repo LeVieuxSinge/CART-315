@@ -9,8 +9,12 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 2.0f;
     public float gravity = -9.81f;
 
+    public float maxScale = 1;
+    public float minScale = 0.5f;
+
     public bool isGrounded;
     public bool isMoving;
+    public bool isHolding;
 
     private GameInstance GameInstance;
     private CharacterController controller;
@@ -60,7 +64,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Changes the height position of the player..
-            if (Input.GetButton("Jump") && isGrounded)
+            if (Input.GetButton("Jump") && isGrounded && !isHolding)
             {
                 velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravity);
             }
@@ -68,6 +72,7 @@ public class PlayerController : MonoBehaviour
             // Gravity
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
+
         }
 
     }

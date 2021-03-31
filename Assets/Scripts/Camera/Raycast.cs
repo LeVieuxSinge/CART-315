@@ -30,10 +30,10 @@ public class Raycast : MonoBehaviour
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if(hit.collider.gameObject.tag == "Scalable")
-                    {
 
-                        Scalable scalable = hit.collider.gameObject.GetComponent<Scalable>();
+                    // GrowNShrink Object
+                    if (hit.collider.gameObject.TryGetComponent(out GrowNShrinkObject growNShrinkObject))
+                    {
 
                         // Null if both keys are pressed
                         if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
@@ -44,16 +44,41 @@ public class Raycast : MonoBehaviour
                         // Scale up if left click
                         if (Input.GetMouseButton(0))
                         {
-                            scalable.ScaleUp(scaleSpeed);
+                            growNShrinkObject.ScaleUp(scaleSpeed);
                         }
 
                         // Scale down if right click
                         if (Input.GetMouseButton(1))
                         {
-                            scalable.ScaleDown(scaleSpeed);
+                            growNShrinkObject.ScaleDown(scaleSpeed);
                         }
 
                     }
+
+                    // GrowNShrink Object
+                    if (hit.collider.gameObject.TryGetComponent(out GrowNShrinkLight growNShrinkLight))
+                    {
+
+                        // Null if both keys are pressed
+                        if (Input.GetMouseButton(0) && Input.GetMouseButton(1))
+                        {
+                            return;
+                        }
+
+                        // Scale up if left click
+                        if (Input.GetMouseButton(0))
+                        {
+                            growNShrinkLight.ScaleUp(scaleSpeed);
+                        }
+
+                        // Scale down if right click
+                        if (Input.GetMouseButton(1))
+                        {
+                            growNShrinkLight.ScaleDown(scaleSpeed);
+                        }
+
+                    }
+
                 }
 
             }
