@@ -13,8 +13,8 @@ public class GrowNShrinkLight : MonoBehaviour
 
     private GameInstance GameInstance;
     private Light Light;
-    private SphereCollider Trigger;
     private Material Material;
+    private List<GameObject> nearAbsorbers;
 
     // Start is called before the first frame update
     void Start()
@@ -22,12 +22,10 @@ public class GrowNShrinkLight : MonoBehaviour
         // Set components
         GameInstance = Globals.GetGameInstance();
         Light = gameObject.GetComponentInChildren<Light>();
-        Trigger = GetComponent<SphereCollider>();
         Material = gameObject.transform.GetChild(0).GetComponent<Renderer>().material;
 
         Light.intensity = energy;
         Light.range = energy;
-        Trigger.radius = energy;
         Material.SetColor("_EmissionColor", Material.color * energy);
     }
 
@@ -42,12 +40,20 @@ public class GrowNShrinkLight : MonoBehaviour
             {
                 Light.intensity = energy;
                 Light.range = energy;
-                Trigger.radius = energy;
                 Material.SetColor("_EmissionColor", Material.color * energy);
             }
 
+            // Charge absorbers around
+            foreach (GameObject item in GameObject.FindGameObjectsWithTag("Interactive"))
+            {
+                if (item.TryGetComponent(out Absorber absorber))
+                {
+                    if (Vector3.Distance(transform.position + (transform.localScale / 2), item.transform.position) <= energy)
+                        item.GetComponent<Absorber>().ChargeEnergy();
+                }
+            }
+
             // Lose power
-            Debug.Log(energy);
             energy = Mathf.Max(energy - energyLoss, minScale);
 
         }

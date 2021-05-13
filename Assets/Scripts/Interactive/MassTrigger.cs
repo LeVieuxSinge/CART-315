@@ -5,7 +5,7 @@ using UnityEngine;
 public class MassTrigger : MonoBehaviour
 {
 
-    public GameObject toDestroy;
+    public GameObject[] toDestroy;
     public float minimumMass = 1;
 
     private GameInstance GameInstance;
@@ -29,7 +29,10 @@ public class MassTrigger : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<Tags>().IsTag("Interactive") && collision.rigidbody.mass > minimumMass)
             {
-                Destroy(toDestroy);
+                foreach (GameObject item in toDestroy)
+                {
+                    Destroy(item);
+                }
             }
         }
     }

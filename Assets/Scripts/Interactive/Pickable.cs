@@ -5,8 +5,7 @@ using UnityEngine;
 public class Pickable : MonoBehaviour
 {
     public bool active = true;
-
-    private bool isHeld = false;
+    public bool isHeld = false;
     private bool playerInRange = false;
 
     private GameInstance GameInstance;
@@ -14,7 +13,6 @@ public class Pickable : MonoBehaviour
     private GameObject Player;
     private TMPro.TextMeshPro TextMesh;
     private PlayerController PlayerController;
-    private SphereCollider Trigger;
 
     // Start is called before the first frame update
     void Start()
@@ -25,12 +23,6 @@ public class Pickable : MonoBehaviour
         Player = Globals.GetPlayer();
         TextMesh = GetComponentInChildren<TMPro.TextMeshPro>();
         PlayerController = Player.GetComponent<PlayerController>();
-
-        // Create trigger collider on item
-        Trigger = gameObject.AddComponent(typeof(SphereCollider)) as SphereCollider;
-        Trigger.radius = 2;
-        Trigger.center = new Vector3(0, 1f, 0);
-        Trigger.isTrigger = true;
     }
 
     // Update is called once per frame
@@ -41,7 +33,10 @@ public class Pickable : MonoBehaviour
             if (isHeld)
             {
                 // Update position
-                transform.position = new Vector3(Player.transform.position.x + 3, Player.transform.position.y + 2, Player.transform.position.z);
+                if (Player.transform.forward.x > 0)
+                    transform.position = new Vector3(Player.transform.position.x + 3, Player.transform.position.y + 2, Player.transform.position.z);
+                else
+                    transform.position = new Vector3(Player.transform.position.x - 3, Player.transform.position.y + 2, Player.transform.position.z);
 
                 // Show text
                 TextMesh.alpha = 1;
@@ -62,6 +57,29 @@ public class Pickable : MonoBehaviour
                     PickUp();
                 }
             }
+
+            // Display text
+            if (Player.transform.localScale.x * 2 >= Rigidbody.mass)
+            {
+                if (Vector3.Distance(transform.position, Player.transform.position) < 3 + transform.localScale.x)
+                {
+                    playerInRange = true;
+                    TextMesh.alpha = 1;
+                }
+
+                else
+                {
+                    playerInRange = false;
+                    TextMesh.alpha = 0;
+                }
+            }
+
+            else
+            {
+                playerInRange = false;
+                TextMesh.alpha = 0;
+            }
+
         }
     }
 
@@ -83,21 +101,27 @@ public class Pickable : MonoBehaviour
         Rigidbody.isKinematic = false;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == Player.tag)
-        {
-            playerInRange = true;
-            TextMesh.alpha = 1;
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (active && other.gameObject.tag == Player.tag)
+    //    {
+    //        if (other.gameObject.transform.localScale.x * 2 >= Rigidbody.mass)
+    //        {
+    //            playerInRange = true;
+    //            TextMesh.alpha = 1;
+    //        }
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == Player.tag)
-        {
-            playerInRange = false;
-            TextMesh.alpha = 0;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (active && other.gameObject.tag == Player.tag)
+    //    {
+    //        if (other.gameObject.transform.localScale.x * 2 >= Rigidbody.mass)
+    //        {
+    //            playerInRange = false;
+    //            TextMesh.alpha = 0;
+    //        }
+    //    }
+    //}
 }

@@ -50,14 +50,11 @@ public class Absorber : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    public void ChargeEnergy()
     {
         if (active && GameInstance.GameRunning)
         {
-            if (other.gameObject.TryGetComponent(out GrowNShrinkLight growNShrinkLight))
-            {
-                energy = Mathf.Min(energy + energyGain, maxScale);
-            }
+            energy = Mathf.Min(energy + energyGain, maxScale);
         }
     }
 }

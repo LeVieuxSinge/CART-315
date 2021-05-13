@@ -33,13 +33,17 @@ public class GrowNShrinkObject : MonoBehaviour
     {
         if (active && GameInstance.GameRunning)
         {
-            // Calculate scale
-            float scale = 0.0f;
-            scale = Mathf.Min(transform.localScale.x + speed, maxScale);
+            // Cannot scale up when held
+            if (gameObject.TryGetComponent(out Pickable pickable))
+            {
+                if (pickable.isHeld)
+                    return;
+            }
 
-            float scaleX = scale;
-            float scaleY = scale;
-            float scaleZ = scale;
+            // Calculate scale
+            float scaleX = Mathf.Min(transform.localScale.x + speed, maxScale); ;
+            float scaleY = Mathf.Min(transform.localScale.y + speed, maxScale); ;
+            float scaleZ = Mathf.Min(transform.localScale.z + speed, maxScale); ;
 
             if (lockX)
                 scaleX = transform.localScale.x ;
@@ -50,7 +54,10 @@ public class GrowNShrinkObject : MonoBehaviour
 
             // Aplly new scale and mass
             transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
-            Rigidbody.mass = scale;
+            if (Rigidbody)
+            {
+                Rigidbody.mass = Mathf.Max(scaleX, scaleY, scaleZ);
+            }
         }
     }
 
@@ -58,13 +65,17 @@ public class GrowNShrinkObject : MonoBehaviour
     {
         if (active && GameInstance.GameRunning)
         {
-            // Calculate scale
-            float scale = 0.0f;
-            scale = Mathf.Max(transform.localScale.x - speed, minScale);
+            // Cannot scale down when held
+            if (gameObject.TryGetComponent(out Pickable pickable))
+            {
+                if (pickable.isHeld)
+                    return;
+            }
 
-            float scaleX = scale;
-            float scaleY = scale;
-            float scaleZ = scale;
+            // Calculate scale
+            float scaleX = Mathf.Max(transform.localScale.x - speed, minScale); ;
+            float scaleY = Mathf.Max(transform.localScale.y - speed, minScale); ;
+            float scaleZ = Mathf.Max(transform.localScale.z - speed, minScale); ;
 
             if (lockX)
                 scaleX = transform.localScale.x;
@@ -75,7 +86,10 @@ public class GrowNShrinkObject : MonoBehaviour
 
             // Aplly new scale and mass
             transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
-            Rigidbody.mass = scale;
+            if (Rigidbody)
+            {
+                Rigidbody.mass = Mathf.Min(scaleX, scaleY, scaleZ);
+            }
         }
     }
 }

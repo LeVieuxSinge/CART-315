@@ -5,7 +5,7 @@ using UnityEngine;
 public class LightTrigger : MonoBehaviour
 {
 
-    public GameObject toDestroy;
+    public GameObject[] toDestroy;
     public float minimumLight = 1;
 
     private GameInstance GameInstance;
@@ -27,9 +27,15 @@ public class LightTrigger : MonoBehaviour
     {
         if (GameInstance.GameRunning)
         {
-            if (collision.gameObject.GetComponent<Tags>().IsTag("Interactive") && collision.gameObject.GetComponent<Absorber>().energy > minimumLight)
+            if (collision.gameObject.GetComponent<Tags>().IsTag("Interactive") && collision.gameObject.TryGetComponent(out Absorber absorber))
             {
-                Destroy(toDestroy);
+                if (collision.gameObject.GetComponent<Absorber>().energy > minimumLight)
+                {
+                    foreach (GameObject item in toDestroy)
+                    {
+                        Destroy(item);
+                    }
+                }
             }
         }
     }
